@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
-import com.innoveworkshop.gametest.assets.DroppingRectangle
 import com.innoveworkshop.gametest.engine.Circle
 import com.innoveworkshop.gametest.engine.GameObject
 import com.innoveworkshop.gametest.engine.GameSurface
-import com.innoveworkshop.gametest.engine.Rectangle
-import com.innoveworkshop.gametest.engine.Vector
+import com.innoveworkshop.gametest.engine.Physics
 
 class MainActivity : AppCompatActivity() {
     protected var gameSurface: GameSurface? = null
@@ -26,6 +24,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         gameSurface = findViewById<View>(R.id.gameSurface) as GameSurface
+        Obstables(gameSurface)
         game = Game()
         gameSurface!!.setRootGameObject(game)
 
@@ -33,21 +32,29 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun setupControls() {
-        upButton = findViewById<View>(R.id.up_button) as Button
-        upButton!!.setOnClickListener { game!!.circle!!.position.y -= 10f }
+        upButton = findViewById<View>(R.id.SpawnBall) as Button
+        upButton!!.setOnClickListener {game}
 
-        downButton = findViewById<View>(R.id.down_button) as Button
-        downButton!!.setOnClickListener { game!!.circle!!.position.y += 10f }
 
-        leftButton = findViewById<View>(R.id.left_button) as Button
-        leftButton!!.setOnClickListener { game!!.circle!!.position.x -= 10f }
-
-        rightButton = findViewById<View>(R.id.right_button) as Button
-        rightButton!!.setOnClickListener { game!!.circle!!.position.x += 10f }
     }
+
+
+    public fun Obstables(surface: GameSurface?){
+        var circle: Circle? = null
+        circle = Circle(
+            (surface!!.width / 2).toFloat(),
+            (surface.height / 2).toFloat(),
+            30f,
+            Color.BLACK
+        )
+    }
+
 
     inner class Game : GameObject() {
         var circle: Circle? = null
+        var time = 0f
+        var deltaTime = 0.016f
+        var InitialY = 0f
 
         override fun onStart(surface: GameSurface?) {
             super.onStart(surface)
@@ -55,33 +62,29 @@ class MainActivity : AppCompatActivity() {
             circle = Circle(
                 (surface!!.width / 2).toFloat(),
                 (surface.height / 2).toFloat(),
-                100f,
-                Color.RED
+                30f,
+                Color.BLACK
             )
             surface.addGameObject(circle!!)
 
-            surface.addGameObject(
-                Rectangle(
-                    Vector((surface.width / 3).toFloat(), (surface.height / 3).toFloat()),
-                    200f, 100f, Color.GREEN
-                )
-            )
-
-            surface.addGameObject(
-                DroppingRectangle(
-                    Vector((surface.width / 3).toFloat(), (surface.height / 3).toFloat()),
-                    100f, 100f, 10f, Color.rgb(128, 14, 80)
-                )
-            )
+            if (position != null) {
+                InitialY = position.y
+            }
         }
 
         override fun onFixedUpdate() {
             super.onFixedUpdate()
 
-            if (!circle!!.isFloored && !circle!!.hitRightWall() && !circle!!.isDestroyed) {
-                circle!!.setPosition(circle!!.position.x + 1, circle!!.position.y + 1)
+            if (circle?.isFloored == false) {
+                circle!!.position.y = Physics().ChnageY(
+                    InitialY,
+                    0f,
+                    time
+                )
+                time += deltaTime
+
             } else {
-                circle!!.destroy()
+                time = 0f
             }
         }
     }
