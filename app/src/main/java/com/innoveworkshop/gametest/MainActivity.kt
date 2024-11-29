@@ -33,7 +33,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun setupControls() {
         upButton = findViewById<View>(R.id.SpawnBall) as Button
-        upButton!!.setOnClickListener {game}
+        upButton!!.setOnClickListener {PlinkoBall((gameSurface!!.width/2).toFloat())}
 
 
     }
