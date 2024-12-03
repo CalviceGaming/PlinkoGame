@@ -13,7 +13,7 @@ class Physics {
         mass: Float = 1f,
     ):Float {
         val gravityForce = mass * gravity
-        Log.d("ACCELARATION", gravityForce.toString())
+        //Log.d("ACCELARATION", gravityForce.toString())
         val finalForce = gravityForce - force
         val accelaration = finalForce/mass
         return accelaration
@@ -25,7 +25,7 @@ class Physics {
         aceleration: Float,
         time: Float,
     ): Float{
-        Log.d("TIME", time.toString())
+        //Log.d("TIME", time.toString())
         val tempY = initialYPosition + (initialYVelocity * time) + (aceleration) * (time*time)
         Log.d("Y: ", tempY.toString())
         return tempY
@@ -39,29 +39,32 @@ class Physics {
     ): Float{
         Log.d("TIME", time.toString())
         val tempX = initialXPosition + (initialXVelocity * time) + (aceleration) * (time*time)
-        Log.d("Y: ", tempX.toString())
+        Log.d("X: ", tempX.toString())
         return tempX
     }
-    fun GetVelocityY(inicial:Float, time:Float): Float {
-        val velocity = (inicial + (9.81*time)).toFloat()
+    fun GetVelocityY(initial:Float, time:Float, grav:Float): Float {
+        val velocity = (initial + (grav*time)).toFloat()
         return velocity
     }
-    fun GetVelocityX(inicial:Float, time:Float, aceleration:Float): Float {
-        val velocity = (inicial + (aceleration*time))
+    fun GetVelocityX(initial:Float, time:Float, aceleration:Float): Float {
+        val velocity = (initial + (aceleration*time))
         return velocity
     }
 
     fun Collisions(
         mainObject: Circle,
-        objectsToColide: MutableList<Circle?>
+        gravForce: Float,
+        mass:Float,
+        objectsToCollide: MutableList<Circle?>
     ): Vector {
-        for(Circle in objectsToColide){
+        for(Circle in objectsToCollide){
             var distanceX = mainObject.position.x - Circle!!.position.x
             var distanceY = mainObject.position.y - Circle.position.y
             var distance = sqrt((distanceX * distanceX) + (distanceY * distanceY))
             if(distance <= (Circle.radius + mainObject.radius)){
-                var velocityX = (distanceX/distance)*mainObject.speed.x
-                var velocityY = (distanceY/distance)*mainObject.speed.y
+                var mainObjectSpeed = sqrt((mainObject.speed.x*mainObject.speed.x)+(mainObject.speed.y*mainObject.speed.y))
+                var velocityX = (distanceX/distance)*mainObjectSpeed
+                var velocityY = (distanceY/distance)*mainObjectSpeed
                 var velocity = Vector(velocityX, velocityY)
                 return velocity
             }

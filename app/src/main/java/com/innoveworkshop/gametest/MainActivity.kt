@@ -17,6 +17,7 @@ class MainActivity : AppCompatActivity() {
     protected var gameSurface: GameSurface? = null
     protected var upButton: Button? = null
     protected var game: Game? = null
+    var ListOfObstacles: MutableList<Circle?> = MutableList(2) {null}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,8 +34,8 @@ class MainActivity : AppCompatActivity() {
     public fun setupControls() {
         upButton = findViewById<View>(R.id.SpawnBall) as Button
         upButton!!.setOnClickListener {
-            //val balls = PlinkoBall((gameSurface!!.width/2).toFloat())
-            //gameSurface!!.addGameObject(balls)
+            val balls = PlinkoBall((gameSurface!!.width/2).toFloat(),20f, ListOfObstacles)
+            gameSurface!!.addGameObject(balls)
         }
     }
 
@@ -43,8 +44,8 @@ class MainActivity : AppCompatActivity() {
         var i = 0
         while (i < ListOfObstacles.size) {
             ListOfObstacles[i] = Circle(
-                ((surface!!.width / 2)+i*10).toFloat(),
-                (surface.height / 2).toFloat(),
+                ((surface!!.width / 2)).toFloat(),
+                ((surface.height / 2)+i*400).toFloat(),
                 30f,
                 Color.BLUE,
                 Vector(0f, 0f)
@@ -56,11 +57,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     inner class Game : GameObject() {
-        var ListOfObstacles: MutableList<Circle?> = MutableList(1) {null}
         override fun onStart(surface: GameSurface?) {
             super.onStart(surface)
 
-            val balls = PlinkoBall((surface!!.width/2).toFloat(), ListOfObstacles)
+            val balls = PlinkoBall(((surface!!.width/2)+40).toFloat(), 20f, ListOfObstacles)
             surface.addGameObject(balls)
 
 

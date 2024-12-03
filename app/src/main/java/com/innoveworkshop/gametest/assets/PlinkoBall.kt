@@ -9,36 +9,47 @@ import com.innoveworkshop.gametest.engine.Vector
 
 class PlinkoBall(
     xPos: Float,
+    val weigth: Float,
     val listOfObs: MutableList<Circle?>
 ): Circle(xPos, 20f, 35f, Color.GRAY, Vector(0f,0f)){
     var time = 0f
-    var deltaTime = 0.166666666f
-    var InitialY = 0f
-    var InitialX = 0f
+    var deltaTime = 0.016f
+    var initialY = 0f
+    var initialX = 0f
+    var initialSpeedX = 0f
+    var initialSpeedY = 0f
+    var grav = 98.1f
+    var windRes = 0f
+    var gravForce = 0f
 
     override fun onStart(surface: GameSurface?) {
         super.onStart(surface)
 
         if (position != null) {
-            InitialY = position.y
-            InitialX = position.x
+            initialY = position.y
+            initialX = position.x
+            gravForce = weigth*grav
         }
     }
 
     override fun onFixedUpdate() {
         super.onFixedUpdate()
 
+        if(speed.x > 0){
+
+        }
+
         if (isFloored == false) {
             position.y = Physics().ChangeY(
-                InitialY,
-                speed.y,
-                9.81f,
+                initialY,
+                initialSpeedY,
+                grav,
                 time,
             )
             position.x = Physics().ChangeX(
-                InitialX,
-                speed.x,
-                0f,
+                initialX,
+                initialSpeedX,
+                windRes,
                 time
             )
             time += deltaTime
@@ -46,11 +57,25 @@ class PlinkoBall(
         } else {
             time = 0f
         }
-        speed.y = Physics().GetVelocityY(speed.y, time)
-        var befSpeed = this.speed
-        this.speed = Physics().Collisions(this, listOfObs)
-        if(befSpeed == this.speed){
-            time = 0f
+        speed.y = Physics().GetVelocityY(initialSpeedY, time, grav)
+        speed.x = Physics().GetVelocityX(initialSpeedX, time, windRes)
+        var befSpeedX = this.speed.x
+        var befSpeedY = this.speed.y
+
+        if (time >= 3*deltaTime) {
+            this.speed = Physics().Collisions(this,gravForce, weigth, listOfObs)
+        }
+        if(befSpeedX == this.speed.x && befSpeedY == this.speed.y){
+
+        }
+        else {
+            if (time >= 3*deltaTime) {
+                time = 0f
+                initialX = speed.x
+                initialSpeedY = speed.y
+                initialY = this.position.y
+                initialX = this.position.x
+            }
         }
     }
 }
