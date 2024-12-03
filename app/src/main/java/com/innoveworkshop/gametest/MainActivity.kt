@@ -2,21 +2,20 @@ package com.innoveworkshop.gametest
 
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
+import com.innoveworkshop.gametest.assets.PlinkoBall
 import com.innoveworkshop.gametest.engine.Circle
 import com.innoveworkshop.gametest.engine.GameObject
 import com.innoveworkshop.gametest.engine.GameSurface
 import com.innoveworkshop.gametest.engine.Physics
+import com.innoveworkshop.gametest.engine.Vector
 
 class MainActivity : AppCompatActivity() {
     protected var gameSurface: GameSurface? = null
     protected var upButton: Button? = null
-    protected var downButton: Button? = null
-    protected var leftButton: Button? = null
-    protected var rightButton: Button? = null
-
     protected var game: Game? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -24,68 +23,52 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         gameSurface = findViewById<View>(R.id.gameSurface) as GameSurface
-        Obstables(gameSurface)
         game = Game()
         gameSurface!!.setRootGameObject(game)
+
 
         setupControls()
     }
 
-    private fun setupControls() {
+    public fun setupControls() {
         upButton = findViewById<View>(R.id.SpawnBall) as Button
-        upButton!!.setOnClickListener {PlinkoBall((gameSurface!!.width/2).toFloat())}
-
-
+        upButton!!.setOnClickListener {
+            //val balls = PlinkoBall((gameSurface!!.width/2).toFloat())
+            //gameSurface!!.addGameObject(balls)
+        }
     }
 
 
-    public fun Obstables(surface: GameSurface?){
-        var circle: Circle? = null
-        circle = Circle(
-            (surface!!.width / 2).toFloat(),
-            (surface.height / 2).toFloat(),
-            30f,
-            Color.BLACK
-        )
+    fun Obstables(surface: GameSurface?, ListOfObstacles: MutableList<Circle?>):MutableList<Circle?>{
+        var i = 0
+        while (i < ListOfObstacles.size) {
+            ListOfObstacles[i] = Circle(
+                ((surface!!.width / 2)+i*10).toFloat(),
+                (surface.height / 2).toFloat(),
+                30f,
+                Color.BLUE,
+                Vector(0f, 0f)
+             )
+            surface.addGameObject(ListOfObstacles[i]!!)
+            i++
+        }
+        return ListOfObstacles
     }
-
 
     inner class Game : GameObject() {
-        var circle: Circle? = null
-        var time = 0f
-        var deltaTime = 0.016f
-        var InitialY = 0f
-
+        var ListOfObstacles: MutableList<Circle?> = MutableList(1) {null}
         override fun onStart(surface: GameSurface?) {
             super.onStart(surface)
 
-            circle = Circle(
-                (surface!!.width / 2).toFloat(),
-                (surface.height / 2).toFloat(),
-                30f,
-                Color.BLACK
-            )
-            surface.addGameObject(circle!!)
+            val balls = PlinkoBall((surface!!.width/2).toFloat(), ListOfObstacles)
+            surface.addGameObject(balls)
 
-            if (position != null) {
-                InitialY = position.y
-            }
+
+            ListOfObstacles = Obstables(surface, ListOfObstacles)
         }
 
         override fun onFixedUpdate() {
             super.onFixedUpdate()
-
-            if (circle?.isFloored == false) {
-                circle!!.position.y = Physics().ChnageY(
-                    InitialY,
-                    0f,
-                    time
-                )
-                time += deltaTime
-
-            } else {
-                time = 0f
-            }
         }
     }
 }
