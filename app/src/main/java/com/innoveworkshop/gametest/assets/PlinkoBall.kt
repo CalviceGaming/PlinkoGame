@@ -11,7 +11,7 @@ class PlinkoBall(
     xPos: Float,
     val weigth: Float,
     val listOfObs: MutableList<Circle?>
-): Circle(xPos, 20f, 35f, Color.GRAY, Vector(0f,0f)){
+): Circle(xPos, 20f, 35f, Color.RED, Vector(0f,0f)){
     var time = 0f
     var deltaTime = 0.016f * 3
     var initialY = 0f
