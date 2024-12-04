@@ -71,7 +71,7 @@ class PlinkoBall(
         else {
             if (time >= 3*deltaTime) {
                 time = 0f
-                initialX = speed.x
+                initialSpeedX = speed.x
                 initialSpeedY = speed.y
                 initialY = this.position.y
                 initialX = this.position.x
