@@ -13,7 +13,7 @@ class PlinkoBall(
     val listOfObs: MutableList<Circle?>
 ): Circle(xPos, 20f, 35f, Color.GRAY, Vector(0f,0f)){
     var time = 0f
-    var deltaTime = 0.016f
+    var deltaTime = 0.016f * 3
     var initialY = 0f
     var initialX = 0f
     var initialSpeedX = 0f
@@ -64,6 +64,7 @@ class PlinkoBall(
 
         if (time >= 3*deltaTime) {
             this.speed = Physics().Collisions(this,gravForce, weigth, listOfObs)
+            this.speed.x = Physics().CollisionWithWalls(this, gameSurface)
         }
         if(befSpeedX == this.speed.x && befSpeedY == this.speed.y){
 

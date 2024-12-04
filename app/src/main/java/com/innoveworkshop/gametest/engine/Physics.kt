@@ -60,4 +60,13 @@ class Physics {
         }
         return Vector(mainObject.speed.x,mainObject.speed.y)
     }
+    fun CollisionWithWalls(
+        mainObject: Circle,
+        surface: GameSurface?
+    ):Float{
+        if(mainObject.position.x + mainObject.radius >= surface!!.width || mainObject.position.x - mainObject.radius <= 0){
+            return -mainObject.speed.x
+        }
+        return mainObject.speed.x
+    }
 }
