@@ -6,18 +6,7 @@ import kotlin.concurrent.fixedRateTimer
 import kotlin.math.sqrt
 
 class Physics {
-    private val gravity = 9.81f * 20
 
-    fun ApplyForce(
-        force: Float = 1f,
-        mass: Float = 1f,
-    ):Float {
-        val gravityForce = mass * gravity
-        //Log.d("ACCELARATION", gravityForce.toString())
-        val finalForce = gravityForce - force
-        val accelaration = finalForce/mass
-        return accelaration
-    }
 
     fun ChangeY(
         initialYPosition: Float,
@@ -27,7 +16,7 @@ class Physics {
     ): Float{
         //Log.d("TIME", time.toString())
         val tempY = initialYPosition + (initialYVelocity * time) + (aceleration) * (time*time)
-        Log.d("Y: ", tempY.toString())
+        //Log.d("Y: ", tempY.toString())
         return tempY
     }
 
@@ -37,13 +26,13 @@ class Physics {
         aceleration: Float,
         time: Float,
     ): Float{
-        Log.d("TIME", time.toString())
+        //Log.d("TIME", time.toString())
         val tempX = initialXPosition + (initialXVelocity * time) + (aceleration) * (time*time)
-        Log.d("X: ", tempX.toString())
+        //Log.d("X: ", tempX.toString())
         return tempX
     }
     fun GetVelocityY(initial:Float, time:Float, grav:Float): Float {
-        val velocity = (initial + (grav*time)).toFloat()
+        val velocity = (initial + (grav*time))
         return velocity
     }
     fun GetVelocityX(initial:Float, time:Float, aceleration:Float): Float {
