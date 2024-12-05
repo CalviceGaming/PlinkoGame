@@ -103,11 +103,11 @@ class MainActivity : AppCompatActivity() {
             var color = Color.YELLOW
             var multiplier = 10f
             if (i < 4 || i > 5){
-                multiplier = 4f
+                multiplier = 2f
                 color = Color.MAGENTA
             }
             if (i < 3 || i > 6){
-                multiplier = 2f
+                multiplier = 1f
                 color = Color.GREEN
             }
             if (i < 2 || i > 7){
@@ -125,12 +125,8 @@ class MainActivity : AppCompatActivity() {
     inner class Game : GameObject() {
         override fun onStart(surface: GameSurface?) {
             super.onStart(surface)
-
-
             ListOfObstacles = Obstables(surface, ListOfObstacles)
             ListOfMultipliers = Multipliers(surface, ListOfMultipliers)
-            var ball = PlinkoBall(surface!!.width.toFloat()/2, 20f, ListOfObstacles, ListOfMultipliers)
-            surface.addGameObject(ball)
         }
 
         override fun onFixedUpdate() {
