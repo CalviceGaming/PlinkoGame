@@ -3,7 +3,7 @@ package com.innoveworkshop.gametest.engine
 import android.graphics.Canvas
 import android.graphics.Paint
 
-open class Rectangle(position: Vector?, var width: Float, var height: Float, color: Int) :
+open class Rectangle(position: Vector?, var width: Float, var height: Float, var color: Int) :
     GameObject(
         position!!
     ), Caged {

@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.collection.floatObjectMapOf
 import kotlin.concurrent.fixedRateTimer
 import kotlin.math.sqrt
+import kotlin.random.Random
 
 class Physics {
 
@@ -54,7 +55,12 @@ class Physics {
                 var mainObjectSpeed = sqrt((mainObject.speed.x*mainObject.speed.x)+(mainObject.speed.y*mainObject.speed.y))
                 var velocityX = (distanceX/distance)*mainObjectSpeed
                 var velocityY = (distanceY/distance)*mainObjectSpeed
-                var velocity = Vector(velocityX/2, velocityY/2)
+                var velocity = Vector(velocityX * 0.75f, velocityY * 0.75f)
+                if (distanceY/distance == 1f || distanceY/distance == -1f){
+                    velocity.y = Random.nextInt(400, 1000).toFloat()
+                    velocity.x = Random.nextInt(-1000, 1000).toFloat()
+                    Log.d("Funny", "Funny Happened")
+                }
                 return velocity
             }
         }

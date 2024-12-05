@@ -18,7 +18,7 @@ class GameSurface @JvmOverloads constructor(
     private var root: GameObject? = null
 
     // Create the GameObject list.
-    private val gameObjects = ArrayList<GameObject?>()
+    public val gameObjects = ArrayList<GameObject?>()
 
     init {
         // Ensure we are on top of everything.
