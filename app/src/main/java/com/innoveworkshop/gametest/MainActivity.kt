@@ -93,6 +93,7 @@ class MainActivity : AppCompatActivity() {
         var width = 80f
         while (i <= ListOfMultipliers.size){
             ListOfMultipliers[i] = Rectangle(Vector(width/2f,gameSurface!!.height - height/2),width, height, Color.RED)
+            gameSurface!!.addGameObject(ListOfMultipliers[i]!!)
             i++
         }
         return ListOfMultipliers
@@ -103,6 +104,7 @@ class MainActivity : AppCompatActivity() {
             super.onStart(surface)
 
             ListOfObstacles = Obstables(surface, ListOfObstacles)
+            ListOfMultipliers = Multipliers(surface, ListOfMultipliers)
         }
 
         override fun onFixedUpdate() {
