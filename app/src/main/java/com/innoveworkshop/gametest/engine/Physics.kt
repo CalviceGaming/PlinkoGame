@@ -54,7 +54,7 @@ class Physics {
                 var mainObjectSpeed = sqrt((mainObject.speed.x*mainObject.speed.x)+(mainObject.speed.y*mainObject.speed.y))
                 var velocityX = (distanceX/distance)*mainObjectSpeed
                 var velocityY = (distanceY/distance)*mainObjectSpeed
-                var velocity = Vector(velocityX, velocityY)
+                var velocity = Vector(velocityX/2, velocityY/2)
                 return velocity
             }
         }
