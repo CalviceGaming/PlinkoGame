@@ -135,7 +135,7 @@ class MainActivity : AppCompatActivity() {
 
         override fun onFixedUpdate() {
             super.onFixedUpdate()
-            pesoText?.setText("${peso}$")
+            pesoText?.setText("${peso.toInt()}$")
             var i = 0
             while (i < ListOfBallsinJaw.size){
                 if(ListOfBallsinJaw[i] != null){
